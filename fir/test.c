@@ -22,17 +22,15 @@
 
 #include <stdint.h>
 #include "hal_fir.h"
-// #include "tinyprintf.h"
 
 #include "h_stim32.h"
 #include "x_stim32.h"
 #include "y_gold32.h"
 __attribute__((section(".l2_data"))) __attribute__((aligned(16))) uint32_t y_actual[sizeof(y_gold)/sizeof(y_gold[0])];
 
-
 int main() {
 
-  volatile int errors = 0;
+  int errors = 0;
   int gold_sum = 0, check_sum = 0;
   int i,j;
   
@@ -53,9 +51,7 @@ int main() {
   FIR_BUSYWAIT();
 
   errors = fir_compare_int(y_actual, y_gold, sizeof(y_gold)/sizeof(y_gold[0]));
-  printf("errors: %d\n", errors);
+  printf("errors: 0x%x\n", errors);
 
-  // return errors
-  *(int *) 0x80000000 = errors;
   return errors;
 }
